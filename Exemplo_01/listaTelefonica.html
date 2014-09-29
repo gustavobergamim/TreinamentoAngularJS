@@ -1,16 +1,95 @@
 <html ng-app="listaTelefonica">
 <head>
+	<meta charset="utf-8" />
 	<script type="text/javascript" src="angular.min.js"></script>
 	<script type="text/javascript">
 
-		var app = angular.module('listaTelefonica', []).
+		var app = angular.module('listaTelefonica', []);
 
-		function ListaTelefonicaController(){
+		app.controller('ListaTelefonicaController', function($scope){
+			$scope.contato = {};
+			$scope.titulo = 'Lista Telefônica';
+			$scope.contatos = [];
 			
-		}
+			$scope.exibeContatos = function(){
+				return $scope.contatos != undefined && $scope.contatos.length > 0;
+			};
+
+			$scope.edicaoAtiva = function(){
+				return $scope.contato != undefined && $scope.contato.indice > -1;
+			};
+
+			$scope.salvarContato = function(contato){
+				if(contato.indice != undefined && contato.indice > -1){
+					$scope.contatos[contato.indice] = contato;
+				}else{
+					$scope.contatos.push(contato);
+				}
+				$scope.contato = {};
+			};
+
+			$scope.editarContato = function(contato){
+				var indice = $scope.contatos.indexOf(contato);
+				if (indice > -1) {
+					$scope.contato = {
+						indice: indice,
+						nome: contato.nome,
+						telefone: contato.telefone
+					};
+				}
+			};
+
+			$scope.cancelarEdicaoContato = function(){
+				$scope.contato = {};
+			};
+
+			$scope.excluirContato = function(contato){
+				var indice = $scope.contatos.indexOf(contato);
+				if (indice > -1) {
+				    $scope.contatos.splice(indice, 1);
+				}
+			};			
+		});
 	</script>
 </head>
 <body ng-controller="ListaTelefonicaController">
-	
+	<h1 ng-bind="titulo"></h1>
+
+	<fieldset>
+		<legend>Dados do contato</legend>
+		<div>
+			<label for="nome">Nome:</label>
+			<input type="text" ng-model="contato.nome" id="nome" />
+			<label for="telefone">Telefone:</label>
+			<input type="text" ng-model="contato.telefone" id="telefone" />
+			<input type="button" value="Salvar" ng-click="salvarContato(contato)" />
+			<input type="button" value="Cancelar" ng-show="edicaoAtiva()" ng-click="cancelarEdicaoContato()" />
+		</div>
+	</fieldset>
+
+	<fieldset ng-show="exibeContatos()">
+		<legend>Contatos</legend>
+		<table>
+			<thead>
+				<tr>
+					<th><input type="checkbox" /></th>
+					<th>Nome</th>
+					<th>Telefone</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="contato in contatos">
+					<td><input type="checkbox" ng-disabled="edicaoAtiva()"/></td>
+					<td>{{contato.nome}}</td>
+		    		<td>{{contato.telefone}}</td>
+		    		<td>
+		    			<input type="button" value="Editar" ng-click="editarContato(contato)" ng-disabled="edicaoAtiva()" />
+		    			<input type="button" value="Remover" ng-click="excluirContato(contato)" ng-disabled="edicaoAtiva()"/>
+		    		</td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
 </body>
 </html>
