@@ -1,15 +1,84 @@
 <html ng-app="listaTelefonica">
 <head>
 	<meta charset="utf-8" />
+	<style type="text/css">
+		tr:nth-child(even).selected td {
+			background-color: #11FF00;
+		}
+
+		tr:nth-child(odd).selected td {
+			background-color: #D4FFCF;
+		}
+	</style>
+</head>
+<body ng-controller="ListaTelefonicaController">
+	<h1 ng-bind="titulo"></h1>
+
+	<fieldset>
+		<legend>Dados do Contato</legend>
+		<div>
+			<label for="nome">Nome:</label>
+			<input type="text" ng-model="contato.nome" id="nome" />
+			<br/>
+			<label for="telefone">Telefone:</label>
+			<input type="text" ng-model="contato.telefone" id="telefone" />
+			<br/>
+			<label for="operadora">Operadora:</label>
+			<select ng-model="contato.operadora" ng-options="op.nome for op in operadoras track by op.id">
+				<option value="">Selecione...</option>
+			</select>
+			<br/>
+			<input type="button" value="Salvar" ng-click="salvarContato()" ng-disabled="!camposPreenchidos()" />
+			<input type="button" value="Cancelar" ng-show="edicaoAtiva()" ng-click="cancelarEdicaoContato()" />
+		</div>
+	</fieldset>
+
+	<fieldset ng-show="exibeContatos()">
+		<legend>Lista de Contatos</legend>
+		<table>
+			<thead>
+				<tr>
+					<th></th>
+					<th>Nome</th>
+					<th>Telefone</th>
+					<th>Operadora</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="contato in contatos" ng-class="{selected: contato.selecionado}">
+					<td>
+						<input type="checkbox" ng-disabled="edicaoAtiva()"
+							ng-model="contato.selecionado" />
+					</td>
+					<td>{{contato.nome}}</td>
+		    		<td>{{contato.telefone}}</td>
+		    		<td>{{contato.operadora.nome}}</td>
+		    		<td>
+		    			<input type="button" value="Editar" ng-click="editarContato(contato)" ng-disabled="edicaoAtiva()" />
+		    			<input type="button" value="Remover" ng-click="excluirContato(contato)" ng-disabled="edicaoAtiva()"/>
+		    		</td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
+
 	<script type="text/javascript" src="angular.min.js"></script>
 	<script type="text/javascript">
 
 		var app = angular.module('listaTelefonica', []);
 
 		app.controller('ListaTelefonicaController', function($scope){
-			$scope.contato = {};
+			
 			$scope.titulo = 'Lista Telefônica';
 			$scope.contatos = [];
+
+			$scope.operadoras = [
+				{ id: 1, nome: 'VIVO'},
+				{ id: 2, nome: 'Claro'},
+				{ id: 3, nome: 'TIM'},
+				{ id: 4, nome: 'Oi'}
+		    ];
 			
 			$scope.exibeContatos = function(){
 				return $scope.contatos != undefined && $scope.contatos.length > 0;
@@ -19,28 +88,38 @@
 				return $scope.contato != undefined && $scope.contato.indice > -1;
 			};
 
-			$scope.salvarContato = function(contato){
+			$scope.camposPreenchidos = function(){
+				return $scope.contato 
+					&& $scope.contato.nome 
+					&& $scope.contato.nome.length > 0 
+					&& $scope.contato.telefone
+					&& $scope.contato.telefone.length > 0
+					&& $scope.contato.operadora
+					&& $scope.contato.operadora.id > 0;
+
+			};
+
+			$scope.salvarContato = function(){
+				var contato = $scope.contato;
+				if(contato == undefined) return;
 				if(contato.indice != undefined && contato.indice > -1){
 					$scope.contatos[contato.indice] = contato;
 				}else{
 					$scope.contatos.push(contato);
 				}
-				$scope.contato = {};
+				delete $scope.contato;
 			};
 
 			$scope.editarContato = function(contato){
 				var indice = $scope.contatos.indexOf(contato);
 				if (indice > -1) {
-					$scope.contato = {
-						indice: indice,
-						nome: contato.nome,
-						telefone: contato.telefone
-					};
+					contato.indice = indice;
+					$scope.contato = angular.copy(contato);
 				}
 			};
 
 			$scope.cancelarEdicaoContato = function(){
-				$scope.contato = {};
+				delete $scope.contato;
 			};
 
 			$scope.excluirContato = function(contato){
@@ -51,45 +130,6 @@
 			};			
 		});
 	</script>
-</head>
-<body ng-controller="ListaTelefonicaController">
-	<h1 ng-bind="titulo"></h1>
 
-	<fieldset>
-		<legend>Dados do contato</legend>
-		<div>
-			<label for="nome">Nome:</label>
-			<input type="text" ng-model="contato.nome" id="nome" />
-			<label for="telefone">Telefone:</label>
-			<input type="text" ng-model="contato.telefone" id="telefone" />
-			<input type="button" value="Salvar" ng-click="salvarContato(contato)" />
-			<input type="button" value="Cancelar" ng-show="edicaoAtiva()" ng-click="cancelarEdicaoContato()" />
-		</div>
-	</fieldset>
-
-	<fieldset ng-show="exibeContatos()">
-		<legend>Contatos</legend>
-		<table>
-			<thead>
-				<tr>
-					<th><input type="checkbox" /></th>
-					<th>Nome</th>
-					<th>Telefone</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="contato in contatos">
-					<td><input type="checkbox" ng-disabled="edicaoAtiva()"/></td>
-					<td>{{contato.nome}}</td>
-		    		<td>{{contato.telefone}}</td>
-		    		<td>
-		    			<input type="button" value="Editar" ng-click="editarContato(contato)" ng-disabled="edicaoAtiva()" />
-		    			<input type="button" value="Remover" ng-click="excluirContato(contato)" ng-disabled="edicaoAtiva()"/>
-		    		</td>
-				</tr>
-			</tbody>
-		</table>
-	</fieldset>
 </body>
 </html>
