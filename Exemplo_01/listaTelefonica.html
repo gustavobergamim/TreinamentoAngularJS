@@ -3,11 +3,11 @@
 	<meta charset="utf-8" />
 	<style type="text/css">
 		tr:nth-child(even).selected td {
-			background-color: #11FF00;
+			background-color: #A0B2FF;
 		}
 
 		tr:nth-child(odd).selected td {
-			background-color: #D4FFCF;
+			background-color: #D5DCFF;
 		}
 	</style>
 </head>
@@ -71,7 +71,12 @@
 		app.controller('ListaTelefonicaController', function($scope){
 			
 			$scope.titulo = 'Lista Telefônica';
-			$scope.contatos = [];
+			$scope.contatos = [
+				{ nome: 'Teste 1', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
+				{ nome: 'Teste 2', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
+				{ nome: 'Teste 3', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
+				{ nome: 'Teste 4', telefone: '(00) 1234-5678', selecionado: false, operadora:{ id:1, nome: 'VIVO' } },
+			];
 
 			$scope.operadoras = [
 				{ id: 1, nome: 'VIVO'},
