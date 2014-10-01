@@ -4,10 +4,10 @@ app.controller('ListaTelefonicaController', function($scope){
 	
 	$scope.titulo = 'Lista Telefônica';
 	$scope.contatos = [
-		{ nome: 'Teste 1', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
+		/*{ nome: 'Teste 1', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
 		{ nome: 'Teste 2', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
 		{ nome: 'Teste 3', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
-		{ nome: 'Teste 4', telefone: '(00) 1234-5678', selecionado: false, operadora:{ id:1, nome: 'VIVO' } },
+		{ nome: 'Teste 4', telefone: '(00) 1234-5678', selecionado: false, operadora:{ id:1, nome: 'VIVO' } }*/
 	];
 
 	$scope.operadoras = [
@@ -21,13 +21,13 @@ app.controller('ListaTelefonicaController', function($scope){
     	{id:1, sigla:'M', descricao:'Masculino'},
     	{id:2, sigla:'F', descricao:'Feminino'}
     ];
-	
-	$scope.exibeContatos = function(){
+
+	$scope.existemContatos = function(){
 		return $scope.contatos != undefined && $scope.contatos.length > 0;
 	};
 
 	$scope.edicaoAtiva = function(){
-		return $scope.contato != undefined && $scope.contato.indice > -1;
+		return $scope.novo || $scope.contato != undefined && $scope.contato.indice > -1;
 	};
 
 	$scope.camposPreenchidos = function(){
@@ -48,6 +48,11 @@ app.controller('ListaTelefonicaController', function($scope){
 			$scope.contatos.push(contato);
 		}
 		delete $scope.contato;
+		delete $scope.novo;
+	};
+
+	$scope.novoContato = function(){	
+		$scope.novo = true;
 	};
 
 	$scope.editarContato = function(indice, contato){
@@ -58,5 +63,6 @@ app.controller('ListaTelefonicaController', function($scope){
 
 	$scope.cancelarEdicaoContato = function(){
 		delete $scope.contato;
+		delete $scope.novo;
 	};		
 });

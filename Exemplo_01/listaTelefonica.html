@@ -2,6 +2,7 @@
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta charset="utf-8" />
+	<style type="text/css" rel="stylesheet" href="css/bootstrap.min.css"></style>
 	<style type="text/css">
 		tr:nth-child(even).selected td {
 			background-color: #A0B2FF;
@@ -13,9 +14,14 @@
 	</style>
 </head>
 <body ng-controller="ListaTelefonicaController">
-	<h1 ng-bind="titulo"></h1>
 
-	<fieldset>
+	<div class="jumbotron">
+		<div class="container">
+			<h1 ng-bind="titulo"></h1>
+		</div>
+	</div>
+
+	<fieldset ng-show="edicaoAtiva()">
 		<legend>Dados do Contato</legend>
 		<div>
 			<label for="nome">Nome:</label>
@@ -40,8 +46,9 @@
 		</div>
 	</fieldset>
 
-	<fieldset ng-show="exibeContatos()">
+	<fieldset ng-hide="edicaoAtiva()">
 		<legend>Lista de Contatos</legend>
+		<input type="button" value="Novo" ng-click="novo = true">
 		<table>
 			<thead>
 				<tr>
@@ -56,25 +63,23 @@
 			<tbody>
 				<tr ng-repeat="contato in contatos" ng-class="{selected: contato.selecionado}">
 					<td>
-						<input type="checkbox" ng-disabled="edicaoAtiva()"
-							ng-model="contato.selecionado" />
+						<input type="checkbox" ng-model="contato.selecionado" />
 					</td>
 					<td>{{contato.nome}}</td>
 		    		<td>{{contato.telefone}}</td>
 		    		<td>{{contato.sexo.sigla}}</td>
 		    		<td>{{contato.operadora.nome}}</td>
 		    		<td>
-		    			<input type="button" value="Editar" ng-click="editarContato($index, contato)" ng-disabled="edicaoAtiva()" />
-		    			<input type="button" value="Remover" ng-click="contatos.splice($index, 1)" ng-disabled="edicaoAtiva()"/>
+		    			<input type="button" value="Editar" ng-click="editarContato($index, contato)" />
+		    			<input type="button" value="Remover" ng-click="contatos.splice($index, 1)"/>
 		    		</td>
+				</tr>
+				<tr>
+					<td colspan="6" ng-hide="existemContatos()">Nenhum contato cadastrado</td>
 				</tr>
 			</tbody>
 		</table>
 	</fieldset>
-
-	<pre>
-		{{ contato | json }}
-	</pre>
 
 	<script type="text/javascript" src="./angular.min.js"></script>
 	<script type="text/javascript" src="./listaTelefonicaController.js"></script>
