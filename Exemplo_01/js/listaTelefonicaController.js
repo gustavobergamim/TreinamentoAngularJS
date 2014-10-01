@@ -4,10 +4,10 @@ app.controller('ListaTelefonicaController', function($scope){
 	
 	$scope.titulo = 'Lista Telefônica';
 	$scope.contatos = [
-		/*{ nome: 'Teste 1', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
+		{ nome: 'Teste 1', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
 		{ nome: 'Teste 2', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
 		{ nome: 'Teste 3', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
-		{ nome: 'Teste 4', telefone: '(00) 1234-5678', selecionado: false, operadora:{ id:1, nome: 'VIVO' } }*/
+		{ nome: 'Teste 4', telefone: '(00) 1234-5678', selecionado: false, operadora:{ id:1, nome: 'VIVO' } }
 	];
 
 	$scope.operadoras = [
@@ -49,10 +49,6 @@ app.controller('ListaTelefonicaController', function($scope){
 		}
 		delete $scope.contato;
 		delete $scope.novo;
-	};
-
-	$scope.novoContato = function(){	
-		$scope.novo = true;
 	};
 
 	$scope.editarContato = function(indice, contato){

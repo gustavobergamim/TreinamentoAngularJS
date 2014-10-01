@@ -2,16 +2,7 @@
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta charset="utf-8" />
-	<style type="text/css" rel="stylesheet" href="css/bootstrap.min.css"></style>
-	<style type="text/css">
-		tr:nth-child(even).selected td {
-			background-color: #A0B2FF;
-		}
-
-		tr:nth-child(odd).selected td {
-			background-color: #D5DCFF;
-		}
-	</style>
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
 </head>
 <body ng-controller="ListaTelefonicaController">
 
@@ -21,68 +12,103 @@
 		</div>
 	</div>
 
-	<fieldset ng-show="edicaoAtiva()">
-		<legend>Dados do Contato</legend>
-		<div>
-			<label for="nome">Nome:</label>
-			<input type="text" ng-model="contato.nome" id="nome" />
-			<br/>
-			<label for="telefone">Telefone:</label>
-			<input type="text" ng-model="contato.telefone" id="telefone" />
-			<br/>
-			<label for="sexo">Sexo:</label>
-			<label ng-repeat="sexo in sexos">
-				<input type="radio" ng-value="sexo" ng-model="contato.sexo" name="sexo" />
-				{{sexo.descricao}}
- 			</label>
-			<br/>
-			<label for="operadora">Operadora:</label>
-			<select ng-model="contato.operadora" ng-options="op.nome for op in operadoras track by op.id">
-				<option value="">Selecione...</option>
-			</select>
-			<br/>
-			<input type="button" value="Salvar" ng-click="salvarContato()" ng-disabled="!camposPreenchidos()" />
-			<input type="button" value="Cancelar" ng-show="edicaoAtiva()" ng-click="cancelarEdicaoContato()" />
+	<div class="container">
+		<div class="panel panel-default" ng-show="edicaoAtiva()">
+			<div class="panel-heading">Dados do Contato</div>
+			<div class="panel-body">
+				<form>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="nome">Nome:</label>
+							<input type="text" class="form-control" ng-model="contato.nome" id="nome" />
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="telefone">Telefone:</label>
+							<input type="text" class="form-control" ng-model="contato.telefone" id="telefone" />
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="sexo">Sexo:</label>
+							<div class="radio">
+								<label class="radio-inline" ng-repeat="sexo in sexos">
+									<input type="radio" ng-value="sexo" ng-model="contato.sexo" name="sexo" />
+									{{sexo.descricao}}
+					 			</label>
+				 			</div>
+			 			</div>
+		 			</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="operadora">Operadora:</label>
+							<select class="form-control" ng-model="contato.operadora" ng-options="op.nome for op in operadoras track by op.id">
+								<option value="">Selecione...</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-offset-10 col-md-2">
+						<div class="btn-group">
+							<input type="button" value="Salvar" class="btn btn-success" ng-click="salvarContato()" ng-disabled="!camposPreenchidos()" />
+							<input type="button" value="Cancelar" class="btn btn-danger" ng-show="edicaoAtiva()" ng-click="cancelarEdicaoContato()" />
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
-	</fieldset>
 
-	<fieldset ng-hide="edicaoAtiva()">
-		<legend>Lista de Contatos</legend>
-		<input type="button" value="Novo" ng-click="novo = true">
-		<table>
-			<thead>
-				<tr>
-					<th></th>
-					<th>Nome</th>
-					<th>Telefone</th>
-					<th>Sexo</th>
-					<th>Operadora</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="contato in contatos" ng-class="{selected: contato.selecionado}">
-					<td>
-						<input type="checkbox" ng-model="contato.selecionado" />
-					</td>
-					<td>{{contato.nome}}</td>
-		    		<td>{{contato.telefone}}</td>
-		    		<td>{{contato.sexo.sigla}}</td>
-		    		<td>{{contato.operadora.nome}}</td>
-		    		<td>
-		    			<input type="button" value="Editar" ng-click="editarContato($index, contato)" />
-		    			<input type="button" value="Remover" ng-click="contatos.splice($index, 1)"/>
-		    		</td>
-				</tr>
-				<tr>
-					<td colspan="6" ng-hide="existemContatos()">Nenhum contato cadastrado</td>
-				</tr>
-			</tbody>
-		</table>
-	</fieldset>
-
-	<script type="text/javascript" src="./angular.min.js"></script>
-	<script type="text/javascript" src="./listaTelefonicaController.js"></script>
+		<div class="panel panel-default" ng-hide="edicaoAtiva()">
+			<div class="panel-heading">Lista de Contatos</div>
+			<div class="panel-body">
+				<div class="col-md-offset-10 col-md-2" style="text-align: right">
+					<div class="btn-group">
+						<input type="button" value="Novo" class="btn btn-primary" ng-click="novo = true">
+					</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+				<div class="col-md-12">
+					<table class="table table-striped table-hover table-bordered">
+						<thead>
+							<tr>
+								<th style="width: 5%;"></th>
+								<th style="width: 30%;">Nome</th>
+								<th style="width: 15%;">Telefone</th>
+								<th style="width: 10%;">Sexo</th>
+								<th style="width: 20%;">Operadora</th>
+								<th style="width: 10%;"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="contato in contatos" ng-class="{info: contato.selecionado}">
+								<td>
+									<input type="checkbox" ng-model="contato.selecionado" />
+								</td>
+								<td>{{contato.nome}}</td>
+					    		<td>{{contato.telefone}}</td>
+					    		<td>{{contato.sexo.sigla}}</td>
+					    		<td>{{contato.operadora.nome}}</td>
+					    		<td>
+					    			<button type="button" title="Editar" class="btn btn-primary" ng-click="editarContato($index, contato)">
+					    				<span class="glyphicon glyphicon-pencil"></span>
+					    			</button>
+					    			<button type="button" title="Remover" class="btn btn-danger" ng-click="contatos.splice($index, 1)">
+					    				<span class="glyphicon glyphicon-trash"></span>
+					    			</button>
+					    		</td>
+							</tr>
+							<tr>
+								<td colspan="6" ng-hide="existemContatos()">Nenhum contato cadastrado</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="./js/angular.min.js"></script>
+	<script type="text/javascript" src="./js/listaTelefonicaController.js"></script>
 
 </body>
 </html>
