@@ -1,5 +1,6 @@
 <html ng-app="listaTelefonica">
 <head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta charset="utf-8" />
 	<style type="text/css">
 		tr:nth-child(even).selected td {
@@ -23,6 +24,12 @@
 			<label for="telefone">Telefone:</label>
 			<input type="text" ng-model="contato.telefone" id="telefone" />
 			<br/>
+			<label for="sexo">Sexo:</label>
+			<label ng-repeat="sexo in sexos">
+				<input type="radio" ng-value="sexo" ng-model="contato.sexo" name="sexo" />
+				{{sexo.descricao}}
+ 			</label>
+			<br/>
 			<label for="operadora">Operadora:</label>
 			<select ng-model="contato.operadora" ng-options="op.nome for op in operadoras track by op.id">
 				<option value="">Selecione...</option>
@@ -41,6 +48,7 @@
 					<th></th>
 					<th>Nome</th>
 					<th>Telefone</th>
+					<th>Sexo</th>
 					<th>Operadora</th>
 					<th></th>
 				</tr>
@@ -53,88 +61,23 @@
 					</td>
 					<td>{{contato.nome}}</td>
 		    		<td>{{contato.telefone}}</td>
+		    		<td>{{contato.sexo.sigla}}</td>
 		    		<td>{{contato.operadora.nome}}</td>
 		    		<td>
-		    			<input type="button" value="Editar" ng-click="editarContato(contato)" ng-disabled="edicaoAtiva()" />
-		    			<input type="button" value="Remover" ng-click="excluirContato(contato)" ng-disabled="edicaoAtiva()"/>
+		    			<input type="button" value="Editar" ng-click="editarContato($index, contato)" ng-disabled="edicaoAtiva()" />
+		    			<input type="button" value="Remover" ng-click="contatos.splice($index, 1)" ng-disabled="edicaoAtiva()"/>
 		    		</td>
 				</tr>
 			</tbody>
 		</table>
 	</fieldset>
 
-	<script type="text/javascript" src="angular.min.js"></script>
-	<script type="text/javascript">
+	<pre>
+		{{ contato | json }}
+	</pre>
 
-		var app = angular.module('listaTelefonica', []);
-
-		app.controller('ListaTelefonicaController', function($scope){
-			
-			$scope.titulo = 'Lista Telefônica';
-			$scope.contatos = [
-				{ nome: 'Teste 1', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
-				{ nome: 'Teste 2', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
-				{ nome: 'Teste 3', telefone: '(00) 1234-5678', selecionado: true, operadora:{ id:1, nome: 'VIVO' } },
-				{ nome: 'Teste 4', telefone: '(00) 1234-5678', selecionado: false, operadora:{ id:1, nome: 'VIVO' } },
-			];
-
-			$scope.operadoras = [
-				{ id: 1, nome: 'VIVO'},
-				{ id: 2, nome: 'Claro'},
-				{ id: 3, nome: 'TIM'},
-				{ id: 4, nome: 'Oi'}
-		    ];
-			
-			$scope.exibeContatos = function(){
-				return $scope.contatos != undefined && $scope.contatos.length > 0;
-			};
-
-			$scope.edicaoAtiva = function(){
-				return $scope.contato != undefined && $scope.contato.indice > -1;
-			};
-
-			$scope.camposPreenchidos = function(){
-				return $scope.contato 
-					&& $scope.contato.nome 
-					&& $scope.contato.nome.length > 0 
-					&& $scope.contato.telefone
-					&& $scope.contato.telefone.length > 0
-					&& $scope.contato.operadora
-					&& $scope.contato.operadora.id > 0;
-
-			};
-
-			$scope.salvarContato = function(){
-				var contato = $scope.contato;
-				if(contato == undefined) return;
-				if(contato.indice != undefined && contato.indice > -1){
-					$scope.contatos[contato.indice] = contato;
-				}else{
-					$scope.contatos.push(contato);
-				}
-				delete $scope.contato;
-			};
-
-			$scope.editarContato = function(contato){
-				var indice = $scope.contatos.indexOf(contato);
-				if (indice > -1) {
-					contato.indice = indice;
-					$scope.contato = angular.copy(contato);
-				}
-			};
-
-			$scope.cancelarEdicaoContato = function(){
-				delete $scope.contato;
-			};
-
-			$scope.excluirContato = function(contato){
-				var indice = $scope.contatos.indexOf(contato);
-				if (indice > -1) {
-				    $scope.contatos.splice(indice, 1);
-				}
-			};			
-		});
-	</script>
+	<script type="text/javascript" src="./angular.min.js"></script>
+	<script type="text/javascript" src="./listaTelefonicaController.js"></script>
 
 </body>
 </html>
