@@ -7,12 +7,12 @@
 <body ng-controller="ListaTelefonicaController">
 
 	<div class="jumbotron">
-		<div class="container">
-			<h1 ng-bind="titulo"></h1>
-		</div>
+		<h1 ng-bind="titulo"></h1>
+		<p>Cadastro de contatos baseado em AngularJS</p>
 	</div>
 
 	<div class="container">
+
 		<div class="panel panel-default" ng-show="edicaoAtiva()">
 			<div class="panel-heading">Dados do Contato</div>
 			<div class="panel-body">
@@ -59,53 +59,54 @@
 		</div>
 
 		<div class="panel panel-default" ng-hide="edicaoAtiva()">
-			<div class="panel-heading">Lista de Contatos</div>
+			<div class="panel-heading">
+				Lista de Contatos
+			</div>
 			<div class="panel-body">
 				<div class="col-md-offset-10 col-md-2" style="text-align: right">
 					<div class="btn-group">
 						<input type="button" value="Novo" class="btn btn-primary" ng-click="novo = true">
 					</div>
 				</div>
-				<div class="clearfix">&nbsp;</div>
-				<div class="col-md-12">
-					<table class="table table-striped table-hover table-bordered">
-						<thead>
-							<tr>
-								<th style="width: 5%;"></th>
-								<th style="width: 30%;">Nome</th>
-								<th style="width: 15%;">Telefone</th>
-								<th style="width: 10%;">Sexo</th>
-								<th style="width: 20%;">Operadora</th>
-								<th style="width: 10%;"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="contato in contatos" ng-class="{info: contato.selecionado}">
-								<td>
-									<input type="checkbox" ng-model="contato.selecionado" />
-								</td>
-								<td>{{contato.nome}}</td>
-					    		<td>{{contato.telefone}}</td>
-					    		<td>{{contato.sexo.sigla}}</td>
-					    		<td>{{contato.operadora.nome}}</td>
-					    		<td>
-					    			<button type="button" title="Editar" class="btn btn-primary" ng-click="editarContato($index, contato)">
-					    				<span class="glyphicon glyphicon-pencil"></span>
-					    			</button>
-					    			<button type="button" title="Remover" class="btn btn-danger" ng-click="contatos.splice($index, 1)">
-					    				<span class="glyphicon glyphicon-trash"></span>
-					    			</button>
-					    		</td>
-							</tr>
-							<tr>
-								<td colspan="6" ng-hide="existemContatos()">Nenhum contato cadastrado</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
 			</div>
+			<table class="table table-striped table-hover table-bordered">
+				<thead>
+					<tr>
+						<th style="width: 5%;"></th>
+						<th style="width: 30%;">Nome</th>
+						<th style="width: 15%;">Telefone</th>
+						<th style="width: 10%;">Sexo</th>
+						<th style="width: 20%;">Operadora</th>
+						<th style="width: 10%;"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="contato in contatos" ng-class="{info: contato.selecionado}">
+						<td>
+							<input type="checkbox" ng-model="contato.selecionado" />
+						</td>
+						<td>{{contato.nome}}</td>
+			    		<td>{{contato.telefone}}</td>
+			    		<td>{{contato.sexo.sigla}}</td>
+			    		<td>{{contato.operadora.nome}}</td>
+			    		<td>
+			    			<button type="button" title="Editar" class="btn btn-primary" ng-click="editarContato($index, contato)">
+			    				<span class="glyphicon glyphicon-pencil"></span>
+			    			</button>
+			    			<button type="button" title="Remover" class="btn btn-danger" ng-click="contatos.splice($index, 1)">
+			    				<span class="glyphicon glyphicon-trash"></span>
+			    			</button>
+			    		</td>
+					</tr>
+					<tr>
+						<td colspan="6" ng-hide="existemContatos()">Nenhum contato cadastrado</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
+	
+	<script type="text/javascript" src="./js/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="./js/angular.min.js"></script>
 	<script type="text/javascript" src="./js/listaTelefonicaController.js"></script>
