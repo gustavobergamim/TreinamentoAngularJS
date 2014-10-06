@@ -6,7 +6,7 @@ app.controller('ListaTelefonicaController', ['$scope', '$interval', function ($s
 	$scope.agora = new Date();
 	$scope.ordenacao = {
 		campo: 'contato.nome',
-		direcao: false
+		inversa: false
 	};
 
 	$scope.paginacao = {
@@ -24,6 +24,15 @@ app.controller('ListaTelefonicaController', ['$scope', '$interval', function ($s
 
 	$scope.maisContatos = function () {
 		$scope.paginacao.totalPaginas++;
+	};
+
+	$scope.definirOrdenacao = function (campo) {
+		if($scope.ordenacao.campo == campo){
+			$scope.ordenacao.inversa = !$scope.ordenacao.inversa;
+		} else {
+			$scope.ordenacao.campo = campo;
+			$scope.ordenacao.inversa = false;
+		}
 	};
 
 	$scope.contatos = [];

@@ -115,20 +115,54 @@
 			<table class="table table-striped table-hover table-bordered">
 				<thead>
 					<tr>
-						<th style="width: 5%;"></th>
-						<th style="width: 25%;">
-							<a ng-click="ordenacao.campo='nome';ordenacao.direcao=!ordenacao.direcao">Nome</a>
+						<th style="width: 3%;"></th>
+						<th style="width: 20%;">
+							<a ng-click="definirOrdenacao('nome')" class="btn btn-link" style="width: 100%;">
+								Nome
+								<span class="pull-right glyphicon" ng-show="ordenacao.campo=='nome'"
+									ng-class="{ 'glyphicon-sort-by-alphabet': !ordenacao.inversa, 'glyphicon-sort-by-alphabet-alt': ordenacao.inversa }"></span>
+							</a>
 						</th>
-						<th style="width: 15%;">Telefone</th>
-						<th style="width: 5%;">Sexo</th>
-						<th style="width: 10%;">Operadora</th>
-						<th style="width: 15%;">Dt. Cadastro</th>
-						<th style="width: 15%;">Dt. Atualização</th>
+						<th style="width: 15%;">
+							<a ng-click="definirOrdenacao('telefone')" class="btn btn-link" style="width: 100%;">
+								Telefone
+								<span class="pull-right glyphicon" ng-show="ordenacao.campo=='telefone'"
+									ng-class="{ 'glyphicon-sort-by-alphabet': !ordenacao.inversa, 'glyphicon-sort-by-alphabet-alt': ordenacao.inversa }"></span>
+							</a>
+						</th>
+						<th style="width: 10%;">
+							<a ng-click="definirOrdenacao('sexo.sigla')" class="btn btn-link" style="width: 100%;">
+								Sexo
+								<span class="pull-right glyphicon" ng-show="ordenacao.campo=='sexo.sigla'"
+									ng-class="{ 'glyphicon-sort-by-alphabet': !ordenacao.inversa, 'glyphicon-sort-by-alphabet-alt': ordenacao.inversa }"></span>
+							</a>
+						</th>
+						<th style="width: 13%;">
+							<a ng-click="definirOrdenacao('operadora.nome')" class="btn btn-link" style="width: 100%;">
+								Operadora
+								<span class="pull-right glyphicon" ng-show="ordenacao.campo=='operadora.nome'"
+									ng-class="{ 'glyphicon-sort-by-alphabet': !ordenacao.inversa, 'glyphicon-sort-by-alphabet-alt': ordenacao.inversa }"></span>
+							</a>
+						</th>
+						<th style="width: 15%;">
+							<a ng-click="definirOrdenacao('dataCadastro')" class="btn btn-link" style="width: 100%;">
+								Dt. Cadastro
+								<span class="pull-right glyphicon" ng-show="ordenacao.campo=='dataCadastro'"
+									ng-class="{ 'glyphicon-sort-by-alphabet': !ordenacao.inversa, 'glyphicon-sort-by-alphabet-alt': ordenacao.inversa }"></span>
+							</a>
+						</th>
+						<th style="width: 15%;">
+							<a ng-click="definirOrdenacao('dataAtualizacao')" class="btn btn-link" style="width: 100%;">
+								Dt. Atualização
+								<span class="pull-right glyphicon" ng-show="ordenacao.campo=='dataAtualizacao'"
+									ng-class="{ 'glyphicon-sort-by-alphabet': !ordenacao.inversa, 'glyphicon-sort-by-alphabet-alt': ordenacao.inversa }"></span>
+							</a>
+						</th>
 						<th style="width: 10%;"></th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="contato in contatos | filter: filtro | orderBy: ordenacao.campo: ordenacao.direcao | limitTo: controlarPaginacao()"
+					<tr ng-repeat="contato in contatos | filter: filtro | orderBy: ordenacao.campo: ordenacao.inversa | limitTo: controlarPaginacao()"
 						ng-class="{ 'info': contato.selecionado=='S' }">
 						<td>
 							<input type="checkbox" ng-model="contato.selecionado" ng-true-value="S" ng-false-value="N" />
