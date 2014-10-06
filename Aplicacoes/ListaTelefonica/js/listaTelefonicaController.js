@@ -83,10 +83,20 @@ app.controller('ListaTelefonicaController', ['$scope', '$interval', function ($s
 		$scope.cancelarEdicaoContato();
 	};
 
-	$scope.editarContato = function (indice, contato) {
-		contato.indice = indice;
-		$scope.contato = {};
-		angular.extend($scope.contato, contato);
+	$scope.editarContato = function (contato) {
+		var indice = $scope.contatos.indexOf(contato);
+		if(indice > -1){
+			contato.indice = indice;
+			$scope.contato = {};
+			angular.extend($scope.contato, contato);
+		}
+	};
+
+	$scope.excluirContato = function (contato) {
+		var indice = $scope.contatos.indexOf(contato);
+		if(indice > -1){
+			$scope.contatos.splice(indice, 1);
+		}
 	};
 
 	$scope.cancelarEdicaoContato = function () {

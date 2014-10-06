@@ -174,10 +174,10 @@
 			    		<td>{{contato.dataCadastro | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
 			    		<td>{{contato.dataAtualizacao | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
 			    		<td>
-			    			<button type="button" title="Editar" class="btn btn-primary" ng-click="editarContato($index, contato)">
+			    			<button type="button" title="Editar" class="btn btn-primary" ng-click="editarContato(contato)">
 			    				<span class="glyphicon glyphicon-pencil"></span>
 			    			</button>
-			    			<button type="button" title="Remover" class="btn btn-danger" ng-click="contatos.splice($index, 1)">
+			    			<button type="button" title="Remover" class="btn btn-danger" ng-click="excluirContato(contato)">
 			    				<span class="glyphicon glyphicon-trash"></span>
 			    			</button>
 			    		</td>
