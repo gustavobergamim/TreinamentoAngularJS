@@ -1,0 +1,9 @@
+{
+  "name": "batepapo",
+  "version": "0.0.1",
+  "main": "app.js",
+  "description": "Bate papo utilizando NodeJS e Socket.IO",
+  "dependencies": {
+    "express": "^4.9.5"
+  }
+}
