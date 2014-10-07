@@ -1,12 +1,9 @@
 var http = require('http');
-var url = require('url');
 var fs = require('fs');
 var path = require('path');
 var fileRegex = /[\w\d_-]+\.[\w\d]+$/;
 
 http.createServer(function (req, res) {
-
-	var urlParams = url.parse(req.url);
 
 	if(req.url == '/'){
 
