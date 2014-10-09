@@ -1,0 +1,16 @@
+{
+  "name": "agenda-ws",
+  "version": "1.0.0",
+  "description": "WS Agenda",
+  "main": "servidor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gustavo Bergamim",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "body-parser": "^1.9.0",
+    "cors": "^2.4.2",
+    "express": "^4.9.6"
+  }
+}

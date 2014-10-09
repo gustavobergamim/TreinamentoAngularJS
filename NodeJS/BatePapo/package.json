@@ -4,6 +4,7 @@
   "main": "app.js",
   "description": "Bate papo utilizando NodeJS e Socket.IO",
   "dependencies": {
-    "express": "^4.9.5"
+    "express": "^4.9.5",
+    "socket.io": "^1.1.0"
   }
 }

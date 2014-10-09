@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Bate Papo</title>
+		<style>
+			* { margin: 0; padding: 0; }
+			form { background: #ccc; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+			form input { border: 0; padding: 10px 1%; width: 88%; }
+			form button { width: 8%; background: #ff0; border: none; padding: 1%; }
+			#mensagens { list-style-type: none; margin: 0; padding: 0; }
+			#mensagens li { padding: 5px 10px; }
+			#mensagens li:nth-child(odd) { background: #eee; }
+		</style>
+	</head>
+	<body>
+		<ul id="mensagens"></ul>
+		<form action="">
+			<input id="msg" autocomplete="off" type="text" />
+			<button>Enviar</button>
+		</form>
+
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="/jquery"></script>
+		<script type="text/javascript">
+			
+			var socket = io();
+			var $form, $botao, $textBox, $lista;
+			var usuario;
+
+			function recuperarControles () {
+				$form = $('form');
+				$botao = $form.find('button');
+				$textBox = $form.find('input:text#msg');
+				$lista = $('ul#mensagens');
+			}
+
+			jQuery(function ($) {
+				recuperarControles();
+				do {
+					usuario = prompt('Digite seu nome:');
+				} while (usuario == undefined || usuario.length == 0);
+				$('title').text('BatePapo - ' + usuario);
+				$form.submit(enviarMensagem);
+				socket.on('receber mensagem', receberMensagem);
+			});
+
+			function enviarMensagem (evt) {
+				evt.preventDefault();
+				var mensagem = $textBox.val();
+				if(mensagem != undefined && mensagem.length > 0){
+					socket.emit('enviar mensagem', { usuario: usuario, mensagem: mensagem });
+					$textBox.val('');
+				}
+			}
+
+			function receberMensagem (dados) {
+				$lista.append($('<li />').text(dados.usuario + ': ' + dados.mensagem));
+			}
+		</script>
+	</body>
+</html>

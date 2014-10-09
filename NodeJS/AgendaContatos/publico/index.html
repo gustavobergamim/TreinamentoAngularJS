@@ -1,0 +1,205 @@
+<html ng-app="agenda">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta charset="utf-8" />
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+</head>
+<body ng-controller="ContatoController">
+
+	<div class="jumbotron">
+		<h1>
+			{{ titulo }}
+			<span class="label label-info">
+				{{ agora | date: 'dd/MM/yyyy HH:mm:ss' }}
+			</span>
+		</h1>
+		<p>Cadastro de contatos baseado em AngularJS</p>
+	</div>
+
+	<div class="container">
+
+		<div class="panel panel-default" ng-show="edicaoAtiva()">
+			<div class="panel-heading">Dados do Contato</div>
+			<div class="panel-body">
+				<form name="formularioCadastro" novalidate>
+					<div class="col-md-6">
+						<div class="form-group" ng-class="{ 'has-error': formularioCadastro.nome.$dirty && !formularioCadastro.nome.$valid }">
+							<label class="control-label" for="nome">Nome:</label>
+							<input type="text" class="form-control" ng-model="contato.nome"
+								ng-required="true" name="nome" id="nome" placeholder="Digite o nome" />
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group" ng-class="{ 'has-error': formularioCadastro.telefone.$dirty && !formularioCadastro.telefone.$valid }">
+							<label class="control-label" for="telefone">Telefone:</label>
+							<input type="text" class="form-control" ng-model="contato.telefone"
+								ng-required="true" name="telefone" id="telefone" placeholder="Digite o telefone"
+								ng-minlength="8" />
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="sexo">Sexo:</label>
+							<div class="radio">
+								<label class="radio-inline" ng-repeat="sexo in sexos">
+									<input type="radio" ng-value="sexo" ng-model="contato.sexo" name="sexo" />
+									{{sexo.descricao}}
+					 			</label>
+				 			</div>
+			 			</div>
+		 			</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="operadora">Operadora:</label>
+							<select class="form-control" ng-model="contato.operadora" ng-options="op.nome for op in operadoras track by op.id">
+								<option value="">Selecione...</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-offset-10 col-md-2">
+						<div class="btn-group">
+							<input type="button" value="Salvar" class="btn btn-success" ng-click="salvarContato()" />
+							<input type="button" value="Cancelar" class="btn btn-danger" ng-show="edicaoAtiva()" ng-click="cancelarEdicaoContato()" />
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="panel-footer" ng-hide="!formularioCadastro.$dirty || formularioCadastro.$valid">
+				<div class="panel panel-danger">
+					<div class="panel-heading">
+						Verifique o preenchimento dos campos abaixo
+					</div>
+					<div class="panel-body">
+						<div class="list-group">
+							<a ng-show="formularioCadastro.nome.$error.required"
+								class="list-group-item list-group-item-danger"
+								href="#nome">
+								O campo nome deve ser preenchido.
+							</a>
+							<a ng-show="formularioCadastro.telefone.$error.minlength"
+								class="list-group-item list-group-item-danger"
+								href="#telefone">
+								O campo telefone deve ter pelo menos 8 caracteres.
+							</a>
+							<a ng-show="formularioCadastro.telefone.$error.required"
+								class="list-group-item list-group-item-danger"
+								href="#telefone">
+								O campo telefone deve ser preenchido.
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel panel-default" ng-hide="edicaoAtiva()">
+			<div class="panel-heading">
+				Lista de Contatos
+			</div>
+			<div class="panel-body">
+				<form class="form-inline" name="formularioPesquisa">
+					<div class="col-md-7">
+						<div class="form-group">
+							<label for="nome">Nome:</label>
+							<input type="text" class="form-control" ng-model="filtro.nome"
+								id="filtroNome" placeholder="Nome para pesquisa" />
+						</div>
+					</div>
+					<div class="col-md-offset-3 col-md-2" style="text-align: right">
+						<div class="btn-group">
+							<input type="button" value="Novo" class="btn btn-primary" ng-click="novo = true">
+						</div>
+					</div>
+				</form>
+			</div>
+			<table class="table table-striped table-hover table-bordered">
+				<thead>
+					<tr>
+						<th style="width: 3%;"></th>
+						<th style="width: 20%;">
+							<a ng-click="definirOrdenacao('nome')" class="btn btn-link" style="width: 100%;">
+								Nome
+								<span class="pull-right glyphicon" ng-show="ordenacao.campo=='nome'"
+									ng-class="{ 'glyphicon-sort-by-alphabet': !ordenacao.inversa, 'glyphicon-sort-by-alphabet-alt': ordenacao.inversa }"></span>
+							</a>
+						</th>
+						<th style="width: 15%;">
+							<a ng-click="definirOrdenacao('telefone')" class="btn btn-link" style="width: 100%;">
+								Telefone
+								<span class="pull-right glyphicon" ng-show="ordenacao.campo=='telefone'"
+									ng-class="{ 'glyphicon-sort-by-alphabet': !ordenacao.inversa, 'glyphicon-sort-by-alphabet-alt': ordenacao.inversa }"></span>
+							</a>
+						</th>
+						<th style="width: 10%;">
+							<a ng-click="definirOrdenacao('sexo.sigla')" class="btn btn-link" style="width: 100%;">
+								Sexo
+								<span class="pull-right glyphicon" ng-show="ordenacao.campo=='sexo.sigla'"
+									ng-class="{ 'glyphicon-sort-by-alphabet': !ordenacao.inversa, 'glyphicon-sort-by-alphabet-alt': ordenacao.inversa }"></span>
+							</a>
+						</th>
+						<th style="width: 13%;">
+							<a ng-click="definirOrdenacao('operadora.nome')" class="btn btn-link" style="width: 100%;">
+								Operadora
+								<span class="pull-right glyphicon" ng-show="ordenacao.campo=='operadora.nome'"
+									ng-class="{ 'glyphicon-sort-by-alphabet': !ordenacao.inversa, 'glyphicon-sort-by-alphabet-alt': ordenacao.inversa }"></span>
+							</a>
+						</th>
+						<th style="width: 15%;">
+							<a ng-click="definirOrdenacao('dataCadastro')" class="btn btn-link" style="width: 100%;">
+								Dt. Cadastro
+								<span class="pull-right glyphicon" ng-show="ordenacao.campo=='dataCadastro'"
+									ng-class="{ 'glyphicon-sort-by-alphabet': !ordenacao.inversa, 'glyphicon-sort-by-alphabet-alt': ordenacao.inversa }"></span>
+							</a>
+						</th>
+						<th style="width: 15%;">
+							<a ng-click="definirOrdenacao('dataAtualizacao')" class="btn btn-link" style="width: 100%;">
+								Dt. Atualização
+								<span class="pull-right glyphicon" ng-show="ordenacao.campo=='dataAtualizacao'"
+									ng-class="{ 'glyphicon-sort-by-alphabet': !ordenacao.inversa, 'glyphicon-sort-by-alphabet-alt': ordenacao.inversa }"></span>
+							</a>
+						</th>
+						<th style="width: 10%;"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="contato in contatos | filter: filtro | orderBy: ordenacao.campo: ordenacao.inversa | limitTo: controlarPaginacao()"
+						ng-class="{ 'info': contato.selecionado=='S' }">
+						<td>
+							<input type="checkbox" ng-model="contato.selecionado" ng-true-value="S" ng-false-value="N" />
+						</td>
+						<td>{{contato.nome}}</td>
+			    		<td>{{contato.telefone}}</td>
+			    		<td>{{contato.sexo.sigla}}</td>
+			    		<td>{{contato.operadora.nome}}</td>
+			    		<td>{{contato.dataCadastro | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+			    		<td>{{contato.dataAtualizacao | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+			    		<td>
+			    			<button type="button" title="Editar" class="btn btn-primary" ng-click="editarContato(contato)">
+			    				<span class="glyphicon glyphicon-pencil"></span>
+			    			</button>
+			    			<button type="button" title="Remover" class="btn btn-danger" ng-click="excluirContato(contato)">
+			    				<span class="glyphicon glyphicon-trash"></span>
+			    			</button>
+			    		</td>
+					</tr>
+					<tr>
+						<td colspan="6" ng-hide="existemContatos()">Nenhum contato cadastrado</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="panel-footer btn-default" ng-show="fimDaLista()" ng-click="maisContatos()" style="text-align: center">
+				Mais...
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="/js/jquery-2.1.1.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="/app/angular.min.js"></script>
+	<script type="text/javascript" src="/app/agenda.js"></script>
+	<script type="text/javascript" src="/app/service/contatoService.js"></script>
+	<script type="text/javascript" src="/app/controller/contatoController.js"></script>
+
+</body>
+</html>
