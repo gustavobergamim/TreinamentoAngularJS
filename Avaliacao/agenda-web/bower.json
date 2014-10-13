@@ -1,0 +1,26 @@
+{
+  "name": "agenda-web",
+  "version": "1.0.0",
+  "homepage": "https://github.com/gustavobergamim/TreinamentoAngularJS",
+  "authors": [
+    "Gustavo S. Bergamim"
+  ],
+  "description": "Agenda de contatos",
+  "moduleType": [
+    "node"
+  ],
+  "license": "BSD-2-Clause",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "publico/content",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angularjs": "~1.2.26",
+    "bootstrap": "~3.2.0"
+  }
+}

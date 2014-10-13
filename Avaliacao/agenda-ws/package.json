@@ -1,0 +1,13 @@
+{
+  "name": "agenda-ws",
+  "version": "1.0.0",
+  "description": "Serviços para manutenção dos contatos da agenda",
+  "main": "servidor.js",
+  "author": "Gustavo S. Bergamim",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "body-parser": "^1.9.0",
+    "cors": "^2.4.2",
+    "express": "^4.9.7"
+  }
+}
