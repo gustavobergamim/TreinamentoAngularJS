@@ -396,6 +396,7 @@ $c(Va),w(X).ready(function(){Xc(X,fc)}))})(window,document);!window.angular.$$cs
 		};
 
 		$scope.excluirContato = function (contato) {
+			if(!confirm('Deseja mesmo excluir o contato "' + contato.nome + '"?')) return;
 			limparMensagens();
 			contatoService.excluir(contato.id)
 				.success(function (data) {
