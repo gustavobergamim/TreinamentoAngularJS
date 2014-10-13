@@ -356,7 +356,13 @@ $c(Va),w(X).ready(function(){Xc(X,fc)}))})(window,document);!window.angular.$$cs
 			return $scope.novo || $scope.contato != undefined && $scope.contato.id > 0;
 		};
 
+		$scope.novoContato = function () {
+			limparMensagens();
+			$scope.novo = true;
+		};
+
 		$scope.salvarContato = function () {
+			limparMensagens();
 			if ($scope.formularioCadastro.$invalid) {
 				$scope.formularioCadastro.$setDirty();
 				for (var propName in $scope.formularioCadastro) {
@@ -377,25 +383,30 @@ $c(Va),w(X).ready(function(){Xc(X,fc)}))})(window,document);!window.angular.$$cs
 			contatoService.salvar(contato)
 				.success(function (data) {
 					$scope.carregarContatos();
+					$scope.mensagemSucesso = data.mensagem;
 				})
 				.error(tratarErro);
 			$scope.cancelarEdicaoContato();
 		};
 
 		$scope.editarContato = function (contato) {
+			limparMensagens();
 			$scope.contato = {};
 			angular.extend($scope.contato, contato);
 		};
 
 		$scope.excluirContato = function (contato) {
+			limparMensagens();
 			contatoService.excluir(contato.id)
 				.success(function (data) {
 					$scope.carregarContatos();
+					$scope.mensagemSucesso = data.mensagem;
 				})
 				.error(tratarErro);
 		};
 
 		$scope.cancelarEdicaoContato = function () {
+			limparMensagens();
 			delete $scope.contato;
 			delete $scope.novo;
 			$scope.formularioCadastro.$setPristine();
@@ -422,8 +433,13 @@ $c(Va),w(X).ready(function(){Xc(X,fc)}))})(window,document);!window.angular.$$cs
 				.error(tratarErro);
 		};
 
+		function limparMensagens() {
+			delete $scope.mensagemSucesso;
+			delete $scope.mensagemErro;
+		}
+
 		function tratarErro (data) {
-			alert('Ocorreu um erro.');
+			$scope.mensagemErro = 'Ocorreu um erro ao realizar a operação. Tente novamente mais tarde.';
 		}
 
 		function init(){
